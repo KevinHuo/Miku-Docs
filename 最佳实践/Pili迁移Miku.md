@@ -34,6 +34,9 @@ rtmp://<domain>/<bucket>/<stream>
 
 # SRT 推流
 srt://<domain>:1935?streamid=#!::h=<bucket>/<stream>,m=publish,domain=<domain>
+
+# WHIP 推流
+https://<domain>/<bocket>/<stream>.whip
 ```
 
 **Miku 支持的拉流格式：**
@@ -58,12 +61,8 @@ srt://<domain>:1935?streamid=#!::h=<bucket>/<stream>,m=request,domain=<domain>
 
 ### 2. 鉴权配置
 
-#### 🔐 推流鉴权
-如果之前开启了推流鉴权，需要更新鉴权生成逻辑。Miku 目前支持：
-- 无鉴权
-- 限时鉴权
-
-具体配置请参考：[Miku 鉴权相关文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication)
+#### 🔐 推流时间防盗链
+如果之前开启了推流鉴权，需要更新鉴权生成逻辑。具体配置请参考：[Miku 鉴权相关文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication)
 
 ####  🔒 拉流防盗链
 
