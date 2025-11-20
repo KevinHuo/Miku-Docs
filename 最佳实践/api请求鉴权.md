@@ -29,7 +29,7 @@
 ```text
 data = <Method> + " " + <Path> + "?" + <RawQuery> + "\nHost: " + <Host> + "\nContent-Type: " + <contentType> + "\n\n" + <bodyStr>
 ```
-> 注意：1.<Method> 与 <Path> 中间有一个空格
+> 注意：1.< Method > 与 < Path > 中间有一个空格
 
 **参数说明：**
 
