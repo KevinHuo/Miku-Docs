@@ -17,7 +17,7 @@
 ### 1.1 获取密钥
 
 1. 登录 [七牛开发者平台](https://portal.qiniu.com/)  
-2. 打开 **个人中心 → 密钥管理**  
+2. 打开 **个人中心 → [密钥管理](https://portal.qiniu.com/developer/user/key)**  
 3. 获取 **AccessKey** 和 **SecretKey**  
 
 > 注意：密钥非常重要，请勿放在客户端或公开仓库。
