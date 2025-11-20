@@ -36,7 +36,7 @@ rtmp://<domain>/<bucket>/<stream>
 srt://<domain>:1935?streamid=#!::h=<bucket>/<stream>,m=publish,domain=<domain>
 
 # WHIP 推流
-https://<domain>/<bocket>/<stream>.whip
+https://<domain>/<bucket>/<stream>.whip
 ```
 
 **Miku 支持的拉流格式：**

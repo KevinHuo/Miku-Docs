@@ -135,9 +135,9 @@ func generateSignature(method, urlStr, body, ak, sk string) string {
 	data.WriteString("\nHost: ")
 	data.WriteString(parsedURL.Host)
 	data.WriteString("\nContent-Type: application/json")
+	data.WriteString("\n\n")
 
 	if body != "" {
-		data.WriteString("\n\n")
 		data.WriteString(body)
 	}
 
