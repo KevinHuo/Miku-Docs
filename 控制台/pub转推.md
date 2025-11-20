@@ -26,12 +26,12 @@
 ### 1. 进入控制台
 进入七牛云控制台，选择 **Pub 转推**，进入 Pub 转推页面。
 
-![服务页面](https://pk0jd2tt5.bkt.clouddn.com/miku_7a9f2c4e1d5b4f2a8c3e9d6b1f0a4c7e.png)
+![服务页面](http://pk0jd2tt5.bkt.clouddn.com/miku_7a9f2c4e1d5b4f2a8c3e9d6b1f0a4c7e.png)
 
 ### 2. 新建任务
 进入任务列表页面，点击 **新建任务**，进入新建 PUB 转推任务弹窗。
 
-![新建任务](https://pk0jd2tt5.bkt.clouddn.com/miku_5c8f1a2d3b4e4f6a9d7b0c2e1f3a8d4b.png)
+![新建任务](http://pk0jd2tt5.bkt.clouddn.com/miku_5c8f1a2d3b4e4f6a9d7b0c2e1f3a8d4b.png)
 
 ---
 
@@ -69,7 +69,7 @@
 
 在任务列表中，选择已经创建成功的转推任务，点击右侧操作栏的 **编辑** 按钮，进入修改 PUB 转推任务界面。
 
-![编辑任务](https://pk0jd2tt5.bkt.clouddn.com/miku_9d3a7f2b4c5e4a1f8b6d0c3e2f7a9b1d.png)
+![编辑任务](http://pk0jd2tt5.bkt.clouddn.com/miku_9d3a7f2b4c5e4a1f8b6d0c3e2f7a9b1d.png)
 
 可编辑内容包括：
 
@@ -90,5 +90,5 @@
 在转推失败时，若咨询售后，可以附带此运行日志，以便排查问题：  
 https://support.qiniu.com/tickets/new/?space=直播云
 
-![运行日志](https://pk0jd2tt5.bkt.clouddn.com/miku_4f2a9c7e1b3d4a6f8e0c5b2d9a7f1c3e.png)
+![运行日志](http://pk0jd2tt5.bkt.clouddn.com/miku_4f2a9c7e1b3d4a6f8e0c5b2d9a7f1c3e.png)
 
