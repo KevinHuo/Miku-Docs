@@ -1,33 +1,70 @@
 # 从 Pili 迁移到 Miku（MikuStream）指南
 
-## 背景
-Pili 接口与签名方式在 Miku 中均有等价实现；Miku 新增了 Bearer API Key 与 IAM 子账号等鉴权能力，并采用新的服务域名与更统一的直播地址格式。
+## ⚠️ 迁移前注意事项
 
-##  ⚠️ 注意事项
-- **海外域名覆盖**：域名覆盖到海外的客户暂不支持切换 Miku，请联系客服确认解决方案
-- **推流 SDK 兼容性**：之前使用 Pili 推流 SDK 进行推流的用户，Miku 目前暂不支持，请确认兼容性
+在开始迁移之前，请注意以下重要事项：
 
-##  📋 Pili 有而 Miku 暂无的接口
+- **海外域名限制**：当前暂不支持覆盖海外区域的域名迁移，请联系客服获取解决方案
+- **推流 SDK 兼容性**：原 Pili 推流 SDK 在 Miku 暂不兼容，请提前确认兼容性
+- **控制台操作限制**：目前云导播和 Pub 转推功能尚未开放 API，需通过控制台手动操作
 
-- **云导播 API**（Cloud Director）
-- **Pub 转推 API**（任务创建、编辑、启动、停止、日志、历史记录等）
-
->   目前只能通过登录门户进行手动操作
+> 📌 **操作指引**：
 > - 导播台：https://portal.qiniu.com/mikustream/caster
 > - Pub 转推：https://portal.qiniu.com/mikustream/pub/tasks
 
-##  🔧 基本信息
+# 迁移步骤详解
 
-- **公共入口**：`https://mls.cn-east-1.qiniumiku.com`（用于列举空间等公共操作）
-- **空间域名**：`https://<bucket>.mls.cn-east-1.qiniumiku.com`
+## 1. 创建直播空间
 
-具体如何使用 Miku 可见文档：[Miku 快速入门](https://developer.qiniu.com/mikustream/12712/mikustream-the-console-quick-start)
+1. 登录 [Miku 控制台](https://portal.qiniu.com/mikustream/buckets)
+2. 新建直播空间
 
-##  🚀 迁移步骤
+![新建直播空间](https://docs.qnsdk.com/miku_8f3c91b2e7d04a8fbe4a2ddc9c1d57af.png)
 
-### 1. 推拉流地址
+## 2. 域名绑定
 
-**Miku 支持的推流格式：**
+将原 Pili 推拉流域名迁移至 Miku 平台
+
+![绑定域名](https://docs.qnsdk.com/miku_d1f47c9ab2384e79a4c6e1f50b8f94e2.png)
+
+> 📋 **备案要求**：直播域名需完成 ICP 备案和公安备案。如不确定备案流程，请参考[备案帮助文档](https://developer.qiniu.com/af/kb/3987/how-to-make-website-and-inquires-the-police-put-on-record-information)
+
+## 3. CNAME 配置
+
+1. 获取 Miku 平台分配的域名和 CNAME
+2. 在您的 DNS 管理平台配置该 CNAME 记录
+
+![cname](https://docs.qnsdk.com/miku_7ab39d84c2ef4a46b1da3f9c0e5d17bf.png)
+
+## 4. 录制配置
+
+![录制设置](https://docs.qnsdk.com/miku_3f9a7be214df4962a8730bc59d42e8aa.png)
+
+> ⚠️ **重要提示**：与 Pili 不同，Miku 当前暂不支持存储过期时间设置
+
+## 5. 推流鉴权迁移
+
+如原 Pili 配置了推流鉴权，迁移至 Miku 时需调整签名算法。具体方法请参考：[Miku 鉴权文档](https://developer.qiniu.com/mikustream/13172/mikustream-live-authentication)
+
+## 6. 拉流鉴权迁移
+
+如原 Pili 配置了拉流鉴权，仅需将过期时间参数从 16 进制调整为 10 进制，其余逻辑保持不变。
+
+**PILI:**
+![PILI](https://docs.qnsdk.com/miku_ae49c0d13f7b45c0b82e5f4d09a8c73d.png)
+
+**MIKU:**
+![MIKU](https://docs.qnsdk.com/miku_59e4c3ab7fdc49f88a3b15d607e1c4fb.png)
+
+## 7. 创建直播流
+
+![创建直播流](https://docs.qnsdk.com/miku_7d9b2e14c0fa4c0db8135ff92a6d3b8c.png)
+
+生成推流地址和拉流地址用于直播推流和观看
+
+## 推拉流地址格式
+
+**Miku 推流协议支持：**
 ```
 # RTMP 推流
 rtmp://<domain>/<bucket>/<stream>
@@ -39,7 +76,7 @@ srt://<domain>:1935?streamid=#!::h=<bucket>/<stream>,m=publish,domain=<domain>
 https://<domain>/<bucket>/<stream>.whip
 ```
 
-**Miku 支持的拉流格式：**
+**Miku 拉流协议支持：**
 ```
 # RTMP 拉流
 rtmp://<domain>/<bucket>/<stream>
@@ -57,62 +94,62 @@ http://<domain>/<bucket>/<stream>.flv
 srt://<domain>:1935?streamid=#!::h=<bucket>/<stream>,m=request,domain=<domain>
 ```
 
-> 💡 **性能建议**：经内部测试及线上反馈，Miku 使用 FLV 格式进行播放整体效果最佳
+> 💡 **性能优化建议**：经测试，Miku 使用 FLV 格式播放性能最优
 
-### 2. 鉴权配置
+## 高级功能说明
 
-#### 🔐 推流时间防盗链
-如果之前开启了推流鉴权，需要更新鉴权生成逻辑。具体配置请参考：[Miku 鉴权相关文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication)
+### URL 重写规则
 
-####  🔒 拉流防盗链
+Pili 采用 break 模式（匹配即终止），而 Miku 采用 continue 模式（匹配后继续），使用 URL 重写时需特别注意此差异
 
-##### Referer 防盗链
-**配置路径：**
-1. 直播空间 → 域名管理 → 具体域名 → 防盗链设置 → Referer 防盗链
-2. 直播空间 → 基础设置（全局）→ Referer 防盗链
+### 自动录制设置
 
-**说明：**
-- 通过 HTTP 头部的 referer 信息进行访问控制
-- 仅支持 HTTP 协议的流媒体播放域名
+如需开启自动录制功能，需通过 API 配置。详细信息请参考：[空间配置更新API](https://developer.qiniu.com/mikustream/13096/mikustream-live-bucket-config-update-api)
 
-##### 时间戳防盗链
-- **算法兼容**：与 Pili 算法一致，可沿用原有逻辑
-- **密钥设置**：在直播空间设置中配置主密钥和副密钥
+# 服务端 API 迁移指南
 
-### 3. 服务端 API
+API 详细文档请参考：[Miku API 概览](https://developer.qiniu.com/mikustream/12890/mikustream-live-an-overview-of-the-api)
 
-####  🔄 域名替换
-- **查询直播空间列表**：`pili.qiniuapi.com` → `mls.cn-east-1.qiniumiku.com`
-- **其他 API 接口**：`pili.qiniuapi.com` → `<bucket>.mls.cn-east-1.qiniumiku.com`
+## 🔄 接口域名替换
 
-####  🔑 鉴权方案选择
+- **直播空间管理**：`pili.qiniuapi.com` → `mls.cn-east-1.qiniumiku.com`
+- **功能接口**：`pili.qiniuapi.com` → `<bucket>.mls.cn-east-1.qiniumiku.com`
 
-**方案 A：AK/SK（QiniuToken）**
-- 复用 Pili 签名代码
-- 修改签名串和请求 Host 为 `mls.<region>.qiniumiku.com`
-- [AK/SK 签名鉴权文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#2)
+## 🔑 鉴权方案选项
 
-**方案 B：Bearer API Key**
+### 方案 A：AK/SK（QiniuToken）
+
+- 可复用现有 Pili 签名代码
+- 修改签名串和 Host 为 `mls.<region>.qiniumiku.com`
+- [AK/SK 认证文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#2)
+
+### 方案 B：Bearer API Key
+
 1. 创建 API Key：`POST http://mls.<region>.qiniumiku.com/?apikey`
-2. 业务请求：`Authorization: Bearer <Miku API Key>`
-- [Bearer Token 鉴权文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#1)
+2. 请求鉴权：`Authorization: Bearer <Miku API Key>`
+- [Bearer Token 认证文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#1)
 
-**方案 C：IAM 子账号**
+### 方案 C：IAM 子账号
+
 - 使用 `AccessKey: IAM-xxxx` + `SecretKey`
-- 按 QiniuToken 方式签名
-- [IAM 鉴权文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#3)
+- 保持 QiniuToken 签名方式
+- [IAM 认证文档](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication#3)
 
->  **重要变化**：与 Pili 不同，IAM 子账号不再需要使用 `pili-iam.qiniuapi.com` 专用域名
+**变更要点：**
+- IAM 子账号不再需要专用域名 `pili-iam.qiniuapi.com`
+- AK/SK 鉴权与 Pili 保持一致
+- 新增 Bearer Token 支持
+- 详见 [API 请求鉴权](https://developer.qiniu.com/mikustream/12893/mikustream-live-http-requests-authentication)
 
-#### 📚 API 接口调整
-详细接口调整请参考：[Miku Live API 文档](https://s.apifox.cn/83029e40-7850-4d8e-9839-e331d0687253)
+# 播放器适配说明
 
-### 4. 播放器适配
+**原 Pili 快直播用户：**
+- 升级至最新版 SDK
+- 更新播放地址格式
+- 其余功能可顺畅迁移
 
-**Pili 快直播用户：**
-- 升级到最新版 SDK
-- 修改播放地址格式
-- 其他功能无缝切换
+---
 
-## 📞 技术支持
-如有迁移问题，请联系技术支持团队获得帮助。
+# 📞 技术支持服务
+
+如有任何迁移问题或技术疑问，欢迎联系我们的技术支持团队获取专业协助。
